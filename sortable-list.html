@@ -160,7 +160,7 @@ or
           type: Number,
           value: 10
         },
-        contentArray: {
+        content: {
           type: Array, notify: true
         }
       },
@@ -229,7 +229,7 @@ or
            */
           onSort: function(evt) {
             this.fire('sort-change', evt);
-            this.set("contentArray", this.contentArray.move(evt.oldIndex, evt.newIndex));
+            this.set("content", this.content.move(evt.oldIndex, evt.newIndex));
             evt.stopPropagation();
           }.bind(this),
           /**
