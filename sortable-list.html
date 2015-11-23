@@ -229,7 +229,7 @@ or
            */
           onSort: function(evt) {
             this.fire('sort-change', evt);
-            this.set("contentArray", this.contentArray.move(evt.oldIndex, evt.newIndex);
+            this.set("contentArray", this.contentArray.move(evt.oldIndex, evt.newIndex));
             evt.stopPropagation();
           }.bind(this),
           /**
