@@ -48,7 +48,7 @@ or
     }
     this.splice(new_index, 0, this.splice(old_index, 1)[0]);
     return this; // for testing purposes
-};
+  };
     Polymer({
       is: 'sortable-list',
       properties: {
@@ -229,7 +229,7 @@ or
            */
           onSort: function(evt) {
             this.fire('sort-change', evt);
-            this.contentArray.move(evt.oldIndex, evt.newIndex);
+            this.contentArray = this.contentArray.move(evt.oldIndex, evt.newIndex);
             evt.stopPropagation();
           }.bind(this),
           /**
