@@ -27,6 +27,22 @@ Simple, flexible drag-and-drop sortable lists utilizing the excellent
     <content></content>
   </template>
   <script>
+  Array.prototype.move = function (old_index, new_index) {
+    while (old_index < 0) {
+        old_index += this.length;
+    }
+    while (new_index < 0) {
+        new_index += this.length;
+    }
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
+};
     Polymer({
       is: 'sortable-list',
       properties: {
@@ -137,6 +153,9 @@ Simple, flexible drag-and-drop sortable lists utilizing the excellent
         scrollSpeed: {
           type: Number,
           value: 10
+        },
+        contentArray: {
+          type: Array, notify: true
         }
       },
       observers: [
@@ -204,6 +223,7 @@ Simple, flexible drag-and-drop sortable lists utilizing the excellent
            */
           onSort: function(evt) {
             this.fire('sort-change', evt);
+            this.contentArray.move(evt.detail.oldIndex, evt.detail.newIndex);
             evt.stopPropagation();
           }.bind(this),
           /**
