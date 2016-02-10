@@ -198,7 +198,7 @@ Polymer({
       onStart: function (evt) {
         this.fire('sort-start', evt)
         evt.stopPropagation()
-      }.bind(this),
+      },
       /**
        * Triggered when a sort ends.
        * @event sort-end
@@ -206,7 +206,7 @@ Polymer({
       onEnd: function (evt) {
         this.fire('sort-end', evt)
         evt.stopPropagation()
-      }.bind(this),
+      },
       /**
        * Triggered when a new element is added to the list via sort drag.
        * @event sort-add
@@ -214,7 +214,7 @@ Polymer({
       onAdd: function (evt) {
         this.fire('sort-add', evt)
         evt.stopPropagation()
-      }.bind(this),
+      },
       /**
        * Triggered when the sort order has been modified.
        * @event sort-update
@@ -222,7 +222,7 @@ Polymer({
       onUpdate: function (evt) {
         this.fire('sort-update', evt)
         evt.stopPropagation()
-      }.bind(this),
+      },
       /**
        * Triggered on add, remove, or update.
        * @event sort-change
@@ -231,7 +231,7 @@ Polymer({
         this.set('content', this.content.move(evt.oldIndex, evt.newIndex))
         this.fire('sort-change', this.content)
         evt.stopPropagation()
-      }.bind(this),
+      },
       /**
        * Triggered when an element was removed by sort drag.
        * @event sort-remove
@@ -239,11 +239,11 @@ Polymer({
       onRemove: function (evt) {
         this.fire('sort-remove', evt)
         evt.stopPropagation()
-      }.bind(this),
+      },
       onFilter: function (evt) {
         this.fire('sort-filter', evt)
         evt.stopPropagation()
-      }.bind(this)
+      }
     }
   }
 })
