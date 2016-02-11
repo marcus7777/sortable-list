@@ -156,6 +156,9 @@ Polymer({
     content: Array,
     output: {type: Array, notify: true}
   },
+  ready: function () {
+    this.output = this.content
+  },
   observers: [
     '_reactivate(group, sort, disabled, store, animation, handle, filter, sortable, ghostClass, scroll, scrollSensitivity, scrollSpeed)'
   ],
@@ -220,7 +223,7 @@ Polymer({
        * @event sort-change
        */
       onSort: function (evt) {
-        this.fire('sort-change', evt) // 
+        this.fire('sort-change', evt)
         this.output.move(evt.oldIndex, evt.newIndex))
         evt.stopPropagation()
       }.bind(this),
