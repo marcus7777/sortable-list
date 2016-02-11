@@ -224,7 +224,7 @@ Polymer({
        */
       onSort: function (evt) {
         this.fire('sort-change', evt)
-        this.output.move(evt.oldIndex, evt.newIndex))
+        this.output.move(evt.oldIndex, evt.newIndex)
         evt.stopPropagation()
       }.bind(this),
       /**
