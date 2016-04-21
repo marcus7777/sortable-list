@@ -47,9 +47,6 @@ Polymer({
   properties: {
     /**
      * A named group to allow drag and drop between multiple elements.
-     * @attribute group
-     * @default null
-     * @type String
      */
     group: {
       type: String,
@@ -61,9 +58,6 @@ Polymer({
     },
     /**
      * When present, disables sorting.
-     * @attribute disabled
-     * @default false
-     * @type Boolean
      */
     disabled: {
       type: Boolean,
@@ -75,9 +69,6 @@ Polymer({
     },
     /**
      * Length of sorting animation (`0` for no animation).
-     * @attribute animation
-     * @default 0
-     * @type Integer
      */
     animation: {
       type: Number,
@@ -85,9 +76,6 @@ Polymer({
     },
     /**
      * CSS selector for a handle inside the sortable item (if any).
-     * @attribute handle
-     * @default null
-     * @type String
      */
     handle: {
       type: String,
@@ -95,9 +83,6 @@ Polymer({
     },
     /**
      * CSS selector for elements to ignore for sorting purposes.
-     * @attribute filter
-     * @default null
-     * @type String
      */
     filter: {
       type: String,
@@ -105,9 +90,6 @@ Polymer({
     },
     /**
      * CSS selector for which child elements should be sortable.
-     * @attribute sortable
-     * @default >*
-     * @type String
      */
     sortable: {
       type: String,
@@ -115,9 +97,6 @@ Polymer({
     },
     /**
      * Name of the class to apply to the ghost during drag.
-     * @attribute ghostClass
-     * @default sortable-ghost
-     * @type String
      */
     ghostClass: {
       type: String,
@@ -125,9 +104,6 @@ Polymer({
     },
     /**
      * Whether or not to scroll when dragging to edges.
-     * @attribute scroll
-     * @default true
-     * @type Boolean
      */
     scroll: {
       type: Boolean,
@@ -135,9 +111,6 @@ Polymer({
     },
     /**
      * Sensitivity of scroll boundary detection.
-     * @attribute scrollSensitivity
-     * @default 30
-     * @type Integer
      */
     scrollSensitivity: {
       type: Number,
@@ -145,15 +118,18 @@ Polymer({
     },
     /**
      * Scrolling speed.
-     * @attribute scrollSpeed
-     * @default 10
-     * @type Integer
      */
     scrollSpeed: {
       type: Number,
       value: 10
     },
-    content: Array,
+    /**
+     * Input
+     */
+    content: {type: Array, value: []},
+    /**
+     * Output
+     */
     output: {type: Array, notify: true}
   },
   ready: function () {
