@@ -1,6 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="sortable-import.html">
-
+<link rel="import" href="../sortable/sortable.html">
 <!--
 `sortable-list`
 Simple, flexible drag-and-drop sortable lists utilizing the excellent
@@ -8,20 +7,10 @@ Simple, flexible drag-and-drop sortable lists utilizing the excellent
 
 ##### Example
 
-    <sortable-list>
-      <div>First Item</div>
-      <div>Second Item</div>
-      <div>Third Item</div>
-    </sortable-list>
-or 
-    <sortable-list contentArray="{{content}}">
-      <template is="dom-repeat" items="[[content]]">
-        <div>{{item}}</div>
-      </template>
+    <sortable-list content="{{content}}" output="{{output}}">
     </sortable-list>
 
 @demo demo/index.html
-@homepage http://elements.divshot.io/sortable-list
 -->
 <dom-module id="sortable-list">
   <template>
@@ -30,193 +19,45 @@ or
         display: block;
       }
     </style>
-    <content></content>
+    <sortable-js handle=".handle" on-sort="onSort">
+      <template is="dom-repeat" items="{{content}}">
+        <div data-id="[[index]]">{{item}}</div>
+      </template>
+    </sortable-js>
   </template>
   <script>
-Array.prototype.move = function (old_index, new_index) {
-  if (new_index >= this.length) {
-    var k = new_index - this.length
-    while ((k--) + 1) {
-      this.push(undefined)
+    Array.prototype.move = function (old_index, new_index) {
+      if (new_index >= this.length) {
+        var k = new_index - this.length
+        while ((k--) + 1) {
+          this.push(undefined)
+        }
+      }
+      this.splice(new_index, 0, this.splice(old_index, 1)[0])
     }
-  }
-  this.splice(new_index, 0, this.splice(old_index, 1)[0])
-}
-Polymer({
-  is: 'sortable-list',
-  properties: {
-    /**
-     * A named group to allow drag and drop between multiple elements.
-     */
-    group: {
-      type: String,
-      value: null
-    },
-    sort: {
-      type: Boolean,
-      value: true
-    },
-    /**
-     * When present, disables sorting.
-     */
-    disabled: {
-      type: Boolean,
-      value: false
-    },
-    store: {
-      type: Object,
-      value: null
-    },
-    /**
-     * Length of sorting animation (`0` for no animation).
-     */
-    animation: {
-      type: Number,
-      value: 0
-    },
-    /**
-     * CSS selector for a handle inside the sortable item (if any).
-     */
-    handle: {
-      type: String,
-      value: null
-    },
-    /**
-     * CSS selector for elements to ignore for sorting purposes.
-     */
-    filter: {
-      type: String,
-      value: null
-    },
-    /**
-     * CSS selector for which child elements should be sortable.
-     */
-    sortable: {
-      type: String,
-      value: '>*'
-    },
-    /**
-     * Name of the class to apply to the ghost during drag.
-     */
-    ghostClass: {
-      type: String,
-      value: 'sortable-ghost'
-    },
-    /**
-     * Whether or not to scroll when dragging to edges.
-     */
-    scroll: {
-      type: Boolean,
-      value: true
-    },
-    /**
-     * Sensitivity of scroll boundary detection.
-     */
-    scrollSensitivity: {
-      type: Number,
-      value: 30
-    },
-    /**
-     * Scrolling speed.
-     */
-    scrollSpeed: {
-      type: Number,
-      value: 10
-    },
-    /**
-     * Input
-     */
-    content: {type: Array, value: []},
-    /**
-     * Output
-     */
-    output: {type: Array, notify: true}
-  },
-  ready: function () {
-    this.output = this.content
-  },
-  observers: [
-    '_reactivate(group, sort, disabled, store, animation, handle, filter, sortable, ghostClass, scroll, scrollSensitivity, scrollSpeed)'
-  ],
-  attached: function () {
-    this._reactivate()
-  },
-  /**
-   * Manually destroy and recreate scrollable.
-   * @method _reactivate
-   */
-  _reactivate: function () {
-    if (this._sortable) { this._sortable.destroy() }
-    this._sortable = Sortable.create(this, this.generateOptions())
-  },
-  generateOptions: function () {
-    return {
-      group: this.group || Math.random(),
-      sort: this.sort,
-      disabled: this.disabled,
-      animation: this.animation,
-      handle: this.handle,
-      filter: this.filter,
-      draggable: this.sortable,
-      ghostClass: this.ghostClass,
-      scroll: this.scroll,
-      scrollSensitivity: this.scrollSensitivity,
-      scrollSpeed: this.scrollSpeed,
-      /**
-       * Triggered when a sort begins.
-       * @event sort-start
-       */
-      onStart: function (evt) {
-        this.fire('sort-start', evt)
-        evt.stopPropagation()
-      }.bind(this),
-      /**
-       * Triggered when a sort ends.
-       * @event sort-end
-       */
-      onEnd: function (evt) {
-        this.fire('sort-end', evt)
-        evt.stopPropagation()
-      }.bind(this),
-      /**
-       * Triggered when a new element is added to the list via sort drag.
-       * @event sort-add
-       */
-      onAdd: function (evt) {
-        this.fire('sort-add', evt)
-        evt.stopPropagation()
-      }.bind(this),
-      /**
-       * Triggered when the sort order has been modified.
-       * @event sort-update
-       */
-      onUpdate: function (evt) {
-        this.fire('sort-update', evt)
-        evt.stopPropagation()
-      }.bind(this),
+    Polymer({
+      is: 'sortable-list',
+      properties: {
+        /**
+         * Input
+         */
+        content: {type: Array, value: []},
+        /**
+         * Output
+         */
+        output: {type: Array, notify: true, computed: "getOutput(content)"}
+      },
+      getOutput: function (content){
+        return content
+      },
       /**
        * Triggered on add, remove, or update.
        * @event sort-change
        */
       onSort: function (evt) {
-        this.fire('sort-change', evt)
-        this.output.move(evt.oldIndex, evt.newIndex)
-        evt.stopPropagation()
-      }.bind(this),
-      /**
-       * Triggered when an element was removed by sort drag.
-       * @event sort-remove
-       */
-      onRemove: function (evt) {
-        this.fire('sort-remove', evt)
-        evt.stopPropagation()
-      }.bind(this),
-      onFilter: function (evt) {
-        this.fire('sort-filter', evt)
-        evt.stopPropagation()
-      }.bind(this)
-    }
-  }
-})
+        this.content.move(evt.oldIndex, evt.newIndex)
+        this.set("content", this.content)
+      }
+    })
   </script>
 </dom-module>
