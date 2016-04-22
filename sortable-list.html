@@ -24,17 +24,6 @@ Simple, flexible drag-and-drop sortable lists utilizing the excellent
     </sortable-js>
   </template>
   <script>
-    Array.prototype.move = function (old_index, new_index) {
-      if (new_index >= this.length) {
-        var k = new_index - this.length
-        while ((k--) + 1) {
-          this.push(undefined)
-        }
-      }
-      this.splice(new_index, 0, this.splice(old_index, 1)[0])
-    }
-    var testing = {}
-    var testingSortMe = {}
     Polymer({
       is: 'sortable-list',
       properties: {
@@ -47,54 +36,24 @@ Simple, flexible drag-and-drop sortable lists utilizing the excellent
       onStart: function () {
         if (this.$.sortable.sortable){
           this.startArray = this.$.sortable.sortable.toArray()
-          testing = {}
+          this.order = {}
           if (Array.isArray(this.sortMe) && this.sortMe.length) {
             for (i = 0; i < this.startArray.length; i++) { 
-              testing[this.startArray[i]] = this.sortMe[i]
+              this.order[this.startArray[i]] = this.sortMe[i]
             }
           } 
         }
       },
       onSort: function (evt) {
-        if (testing && !(evt.oldIndex + evt.newIndex)) {
+        if (this.order) {
           this.endArray = this.$.sortable.sortable.toArray()
           var sortMe = []
           for (i = 0; i < this.endArray.length; i++) { 
-            sortMe.push(testing[this.endArray[i]])
+            sortMe.push(this.order[this.endArray[i]])
           }
-        } else {
-          testing.move(evt.oldIndex, evt.newIndex)
         }
         this.set("sortMe", sortMe)
       }
     })
-  function clone(obj) {
-    var copy;
-    // Handle the 3 simple types, and null or undefined
-    if (null == obj || "object" != typeof obj) return obj;
-    // Handle Date
-    if (obj instanceof Date) {
-      copy = new Date();
-      copy.setTime(obj.getTime());
-      return copy;
-    }
-    // Handle Array
-    if (obj instanceof Array) {
-      copy = [];
-      for (var i = 0, len = obj.length; i < len; i++) {
-        copy[i] = clone(obj[i]);
-      }
-      return copy;
-    }
-    // Handle Object
-    if (obj instanceof Object) {
-      copy = {};
-      for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-      }
-      return copy;
-    }
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-  }
   </script>
 </dom-module>
