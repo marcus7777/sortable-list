@@ -49,7 +49,9 @@ Simple, flexible drag-and-drop sortable lists utilizing the excellent
           this.endArray = this.$.sortable.sortable.toArray()
           var sortMe = []
           for (i = 0; i < this.endArray.length; i++) { 
-            sortMe.push(this.order[this.endArray[i]])
+            if (this.order[this.endArray[i]]) {
+              sortMe.push(this.order[this.endArray[i]])
+            }
           }
         }
         this.set("sortMe", sortMe)
