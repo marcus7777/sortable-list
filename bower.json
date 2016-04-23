@@ -10,7 +10,7 @@
   "main": "sortable-list.html",
   "dependencies": {
     "polymer": "Polymer/polymer#~1.0.0",
-    "Sortable": "~1.0"
+    "Sortable": "RubaXa/Sortable#master"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~1.0.0",
